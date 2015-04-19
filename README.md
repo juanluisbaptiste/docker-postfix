@@ -31,7 +31,7 @@ If you are going to use this container from other docker containers then it's be
     
 #### A note about using gmail as a relay
 
-Since last year, Gmail by default (does not allow email clients that don't use OAUTH 2)[http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html] 
+Since last year, Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html) 
 for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your 
 [google settings](https://www.google.com/settings/security/lesssecureapps). 
 
