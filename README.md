@@ -8,7 +8,7 @@ Clone this repo and then:
     cd docker-Postfix
     sudo docker build -t postfix .
 
-You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled from the Hub:
+You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
 
     sudo docker pull juanluisbaptiste/postfix:latest
 
