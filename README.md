@@ -1,5 +1,5 @@
 # docker-postfix
-Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image.
+Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no local authentication enabled (to be run in a secure LAN). 
 
 ### Build instructions
 
