@@ -1,5 +1,5 @@
 # docker-postfix
-Simple Postfix SMTP TLS relay docker image.Run it like this:
+Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image.
 
 ### Build instructions
 
@@ -29,7 +29,7 @@ If you are going to use this container from other docker containers then it's be
     docker run --rm --name postfix -P -e SMTP_SERVER=smtp.bar.com -e SMTP_USERNAME=foo@bar.com -e SMTP_PASSWORD=XXXXXXXX postfix
     
     
-## A note about using gmail as a relay
+#### A note about using gmail as a relay
 
 Since last year, Gmail by default (does not allow email clients that don't use OAUTH 2)[http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html] 
 for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your 
