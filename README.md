@@ -20,13 +20,21 @@ The following env variables need to be passed to the container:
 * `SMTP_USERNAME` Username to authenticate with.
 * `SMTP_PASSWORD` Password of the SMTP user.
 
-To use this container from anywhere, the port 25 needs to be exposed to the docker host server:
+To use this container from anywhere, the 25 port needs to be exposed to the docker host server:
 
-    docker run --rm --name postfix -p "25:25" -e SMTP_SERVER=smtp.bar.com -e SMTP_USERNAME=foo@bar.com -e SMTP_PASSWORD=XXXXXXXX postfix
+    docker run -d --name postfix -p "25:25"  \ 
+           -e SMTP_SERVER=smtp.bar.com \
+           -e SMTP_USERNAME=foo@bar.com \
+           -e SMTP_PASSWORD=XXXXXXXX \
+           postfix
     
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
-    docker run --rm --name postfix -P -e SMTP_SERVER=smtp.bar.com -e SMTP_USERNAME=foo@bar.com -e SMTP_PASSWORD=XXXXXXXX postfix
+    docker run -d --name postfix -P \
+           -e SMTP_SERVER=smtp.bar.com \
+           -e SMTP_USERNAME=foo@bar.com \
+           -e SMTP_PASSWORD=XXXXXXXX \
+           postfix
     
     
 #### A note about using gmail as a relay
