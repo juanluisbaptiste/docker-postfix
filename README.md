@@ -26,7 +26,7 @@ To use this container from anywhere, the 25 port needs to be exposed to the dock
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
-           juanuisbaptiste/postfix
+           juanluisbaptiste/postfix
     
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
@@ -34,7 +34,7 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
-           juanuisbaptiste/postfix
+           juanluisbaptiste/postfix
     
     
 #### A note about using gmail as a relay
