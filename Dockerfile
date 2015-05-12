@@ -10,6 +10,7 @@ RUN sed -i -e 's/inet_interfaces = localhost/inet_interfaces = all/g' /etc/postf
 COPY run.sh /
 RUN chmod +x /run.sh
 COPY etc/supervisord.d/postfix.ini /etc/supervisord.d/
+RUN newaliases
 
 EXPOSE 25
 #ENTRYPOINT ["/run.sh"]
