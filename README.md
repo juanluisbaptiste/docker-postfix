@@ -27,6 +27,7 @@ To use this container from anywhere, the 25 port needs to be exposed to the dock
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
+           -e SERVER_HOSTNAME=helpdesk.mycompany.com \
            juanluisbaptiste/postfix
     
 If you are going to use this container from other docker containers then it's better to just publish the port:
