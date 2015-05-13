@@ -36,6 +36,7 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
+           -e SERVER_HOSTNAME=helpdesk.mycompany.com \           
            juanluisbaptiste/postfix
     
     
