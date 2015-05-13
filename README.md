@@ -19,6 +19,7 @@ The following env variables need to be passed to the container:
 * `SMTP_SERVER` Server address of the SMTP server to use.
 * `SMTP_USERNAME` Username to authenticate with.
 * `SMTP_PASSWORD` Password of the SMTP user.
+* `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
 
 To use this container from anywhere, the 25 port needs to be exposed to the docker host server:
 
