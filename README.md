@@ -8,7 +8,7 @@ Clone this repo and then:
     cd docker-Postfix
     sudo docker build -t postfix .
 
-Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) files:
+Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.dev.yml) files:
 
     sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
 
