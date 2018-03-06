@@ -49,9 +49,9 @@ Or if you can start the service using the provided [docker-compose](https://gith
 
 #### A note about using gmail as a relay
 
-Since last year, Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html) 
-for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your 
-[google settings](https://www.google.com/settings/security/lesssecureapps). 
+Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html)
+for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your
+[google settings](https://www.google.com/settings/security/lesssecureapps).
 
 Also take into account that email `From:` header will contain the email address of the account being used to 
 authenticate against the Gmail SMTP server(SMTP_USERNAME), the one on the email will be ignored by Gmail.
