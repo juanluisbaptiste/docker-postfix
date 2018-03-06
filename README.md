@@ -8,7 +8,11 @@ Clone this repo and then:
     cd docker-Postfix
     sudo docker build -t postfix .
 
-You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
+Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) files:
+
+    sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+
+For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
 
     sudo docker pull juanluisbaptiste/postfix:latest
 
@@ -38,8 +42,11 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \           
            juanluisbaptiste/postfix
-    
-    
+
+Or if you can start the service using the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) file for production use:
+
+    sudo docker-compose up -d
+
 #### A note about using gmail as a relay
 
 Since last year, Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html) 
