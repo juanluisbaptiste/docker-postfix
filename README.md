@@ -1,6 +1,8 @@
 # docker-postfix
 Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no local authentication enabled (to be run in a secure LAN). 
 
+It also includes rsyslog to enable logging to stdout.
+
 ### Build instructions
 
 Clone this repo and then:
