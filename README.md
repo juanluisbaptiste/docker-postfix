@@ -26,6 +26,7 @@ For more information on using multiple compose files [see here](https://docs.doc
 The following env variables need to be passed to the container:
 
 * `SMTP_SERVER` Server address of the SMTP server to use.
+* `SMTP_PORT` (Optional, Default value: 587) Port address of the SMTP server to use.
 * `SMTP_USERNAME` Username to authenticate with.
 * `SMTP_PASSWORD` Password of the SMTP user.
 * `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
