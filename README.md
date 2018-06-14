@@ -30,6 +30,7 @@ The following env variables need to be passed to the container:
 * `SMTP_USERNAME` Username to authenticate with.
 * `SMTP_PASSWORD` Password of the SMTP user.
 * `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
+* `POSTFIX_MYNETWORKS` Subnets from which relaying is allowed, if empty only the containers itself can relay. Escape the mask with a backslash.
 
 To use this container from anywhere, the 25 port needs to be exposed to the docker host server:
 
@@ -38,8 +39,11 @@ To use this container from anywhere, the 25 port needs to be exposed to the dock
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
+           -e POSTFIX_MYNETWORKS=192.168.1.0\/24
            juanluisbaptiste/postfix
     
+Note the backslash used to escape the subnet mask.
+
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
     docker run -d --name postfix -P \
