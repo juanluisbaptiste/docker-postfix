@@ -46,5 +46,10 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   fi
 fi
 
+#Additional security related steps
+postconf -e 'disable_vrfy_command = yes'
+postconf -e 'smtpd_delay_reject = yes'
+postfonf -e 'smtpd_helo_required = yes'
+
 #Start services
 supervisord
