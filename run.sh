@@ -15,8 +15,8 @@ DOMAIN=`echo ${SERVER_HOSTNAME} |awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^
 # Set needed config options
 postconf -e "myhostname = ${SERVER_HOSTNAME}"
 postconf -e "mydomain = ${DOMAIN}"
-postconf -e "mydestination = $myhostname"
-postconf -e "myorigin = \$mydomain"
+postconf -e 'mydestination = $myhostname'
+postconf -e 'myorigin = $mydomain'
 postconf -e "relayhost = [${SMTP_SERVER}]:${SMTP_PORT}"
 postconf -e "smtp_use_tls = yes"
 postconf -e "smtp_sasl_auth_enable = yes"
