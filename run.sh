@@ -56,16 +56,5 @@ fi
 echo -e "/^MIME-Version:/i PREPEND RelayTag: $TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $TAG" > /etc/postfix/header_tag
 echo "******** Header tag is $TAG *********"
 
-# Create sasl_passwd file with auth credentials
-if [ ! -f /etc/postfix/sasl_passwd ]; then
-  grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
-  if [ $? -gt 0 ]; then
-    echo "Adding SASL authentication configuration"
-    echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
-    postmap /etc/postfix/sasl_passwd
-  fi
-fi
-
-
 #Start services
 supervisord
