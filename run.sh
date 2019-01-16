@@ -46,5 +46,8 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   fi
 fi
 
+#Check for "internal" restrictions
+[ ! -z "${PRIVATE_ONLY}" ] && postconf -e 'mynetworks = 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
+
 #Start services
 supervisord
