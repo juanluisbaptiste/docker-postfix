@@ -47,14 +47,11 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
 fi
 
 #Set header tag
-postconf -e "header_checks = regexp:/etc/postfix/header_tag"
-if [ -z "${HEADER_TAG}" ]; then
-TAG="$RANDOM"
-else
-TAG="${HEADER_TAG}"
+if [ -z "${SMTP_HEADER_TAG}" ]; then
+  postconf -e "header_checks = regexp:/etc/postfix/header_tag"
+  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
+  echo "******** Header tag is $SMTP_HEADER_TAG *********"
 fi
-echo -e "/^MIME-Version:/i PREPEND RelayTag: $TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $TAG" > /etc/postfix/header_tag
-echo "******** Header tag is $TAG *********"
 
 #Start services
 supervisord
