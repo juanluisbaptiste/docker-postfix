@@ -46,6 +46,13 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   fi
 fi
 
+#Set header tag  
+if [ ! -z "${SMTP_HEADER_TAG}" ]; then
+  postconf -e "header_checks = regexp:/etc/postfix/header_tag"
+  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
+  echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
+fi
+
 #Check for "internal" restrictions
 [ ! -z "${PRIVATE_ONLY}" ] && postconf -e 'mynetworks = 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
 
