@@ -53,8 +53,20 @@ if [ ! -z "${SMTP_HEADER_TAG}" ]; then
   echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
 fi
 
-#Check for "internal" restrictions
-[ ! -z "${PRIVATE_ONLY}" ] && postconf -e 'mynetworks = 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
+#Check for subnet restrictions
+nets='10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
+if [ -z "${SMTP_NETWORKS}" ]; then
+        add_config_value "mynetworks" "${nets}"
+else
+        for i in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
+                if grep -Eq "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}" <<<$i ; then
+                        defnets+=", $i"
+                else
+                        echo "$i is not in proper IPv4 subnet format. Ignoring."
+                fi
+        done
+        add_config_value "mynetworks" "${nets}"
+fi
 
 #Start services
 supervisord
