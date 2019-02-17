@@ -55,18 +55,16 @@ fi
 
 #Check for subnet restrictions
 nets='10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
-if [ -z "${SMTP_NETWORKS}" ]; then
-        add_config_value "mynetworks" "${nets}"
-else
+if [ ! -z "${SMTP_NETWORKS}" ]; then
         for i in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
                 if grep -Eq "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}" <<<$i ; then
-                        defnets+=", $i"
+                        nets+=", $i"
                 else
                         echo "$i is not in proper IPv4 subnet format. Ignoring."
                 fi
         done
-        add_config_value "mynetworks" "${nets}"
 fi
+add_config_value "mynetworks" "${nets}"
 
 #Start services
 supervisord
