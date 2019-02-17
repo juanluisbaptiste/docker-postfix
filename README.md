@@ -33,7 +33,8 @@ The following env variables need to be passed to the container:
 
 The following env variable(s) are optional.
 * `SMTP_HEADER_TAG` This will add a header for tracking messages upstream. Helpful for spam filters. Will appear as "RelayTag: ${SMTP_HEADER_TAG}" in the email headers.
-* `PRIVATE_ONLY` Setting this will restrict access to private subnets only.
+* `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
+    "-e SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'
 
 
 To use this container from anywhere, the 25 port needs to be exposed to the docker host server:
