@@ -13,7 +13,6 @@ function add_config_value() {
  postconf -e "${key} = ${value}"
 }
 
-
 [ -z "${SMTP_SERVER}" ] && echo "SMTP_SERVER is not set" && exit 1
 [ -z "${SMTP_USERNAME}" ] && echo "SMTP_USERNAME is not set" && exit 1
 [ -z "${SMTP_PASSWORD}" ] && echo "SMTP_PASSWORD is not set" && exit 1
@@ -34,7 +33,6 @@ add_config_value "smtp_use_tls" "yes"
 add_config_value "smtp_sasl_auth_enable" "yes"
 add_config_value "smtp_sasl_password_maps" "hash:\/etc\/postfix\/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
-
 
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd ]; then
