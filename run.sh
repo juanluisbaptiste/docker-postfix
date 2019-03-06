@@ -10,9 +10,7 @@ function add_config_value() {
   [ "${value}" == "" ] && echo "ERROR: No value set !!" && exit 1
 
   echo "Setting configuration option ${key} with value: ${value}"
-  sed -i -e "/^#\?\(\s*${key}\s*=\s*\).*/{s//\1${value}/;:a;n;:ba;q}" \
-         -e "\$a${key}=${value}" \
-         ${config_file}
+ postconf -e "${key} = ${value}"
 }
 
 [ -z "${SMTP_SERVER}" ] && echo "SMTP_SERVER is not set" && exit 1
