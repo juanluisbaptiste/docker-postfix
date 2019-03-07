@@ -55,6 +55,10 @@ Or if you can start the service using the provided [docker-compose](https://gith
 
     sudo docker-compose up -d
 
+To see the email logs in real time:
+
+    docker logs -f postfix
+
 #### A note about using gmail as a relay
 
 Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html)
