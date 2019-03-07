@@ -10,9 +10,7 @@ function add_config_value() {
   [ "${value}" == "" ] && echo "ERROR: No value set !!" && exit 1
 
   echo "Setting configuration option ${key} with value: ${value}"
-  sed -i -e "/^#\?\(\s*${key}\s*=\s*\).*/{s//\1${value}/;:a;n;:ba;q}" \
-         -e "\$a${key}=${value}" \
-         ${config_file}
+ postconf -e "${key} = ${value}"
 }
 
 [ -z "${SMTP_SERVER}" ] && echo "SMTP_SERVER is not set" && exit 1
@@ -44,6 +42,13 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
     echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
     postmap /etc/postfix/sasl_passwd
   fi
+fi
+
+#Set header tag  
+if [ ! -z "${SMTP_HEADER_TAG}" ]; then
+  postconf -e "header_checks = regexp:/etc/postfix/header_tag"
+  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
+  echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
 fi
 
 #Start services

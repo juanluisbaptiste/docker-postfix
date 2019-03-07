@@ -33,6 +33,9 @@ The following env variables need to be passed to the container:
 * `SMTP_PASSWORD` Password of the SMTP user.
 * `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
 
+The following env variable(s) are optional.
+* `SMTP_HEADER_TAG` This will add a header for tracking messages upstream. Helpful for spam filters. Will appear as "RelayTag: ${SMTP_HEADER_TAG}" in the email headers.
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \ 
