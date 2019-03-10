@@ -31,7 +31,7 @@ add_config_value "myorigin" '$mydomain'
 add_config_value "relayhost" "[${SMTP_SERVER}]:${SMTP_PORT}"
 add_config_value "smtp_use_tls" "yes"
 add_config_value "smtp_sasl_auth_enable" "yes"
-add_config_value "smtp_sasl_password_maps" "hash:\/etc\/postfix\/sasl_passwd"
+add_config_value "smtp_sasl_password_maps" "hash:/etc/postfix/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
 
 # Create sasl_passwd file with auth credentials
