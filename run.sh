@@ -64,6 +64,7 @@ if [ ! -z "${SMTP_NETWORKS}" ]; then
 fi
 add_config_value "mynetworks" "${nets}"
 
+cp /etc/resolv.conf /var/spool/postfix/etc/
 
 #Start services
 supervisord
