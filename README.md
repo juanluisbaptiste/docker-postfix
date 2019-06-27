@@ -71,8 +71,8 @@ Gmail by default [does not allow email clients that don't use OAUTH 2](http://go
 for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your
 [google settings](https://www.google.com/settings/security/lesssecureapps).
 
-Also take into account that email `From:` header will contain the email address of the account being used to 
-authenticate against the Gmail SMTP server(SMTP_USERNAME), the one on the email will be ignored by Gmail.
+Also take into account that email `From:` header will contain the email address of the account being used to
+authenticate against the Gmail SMTP server(SMTP_USERNAME), the one on the email will be ignored by Gmail unless you [add it as an alias](https://support.google.com/mail/answer/22370).
 
 
 ### Debugging
