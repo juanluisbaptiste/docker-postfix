@@ -1,5 +1,5 @@
 #Dockerfile for a Postfix email relay service
-FROM centos:latest
+FROM centos:7
 MAINTAINER Juan Luis Baptiste juan.baptiste@gmail.com
 
 RUN yum install -y epel-release && yum update -y && \
