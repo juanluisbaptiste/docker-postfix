@@ -64,6 +64,10 @@ if [ ! -z "${SMTP_NETWORKS}" ]; then
 fi
 add_config_value "mynetworks" "${nets}"
 
-
 #Start services
+
+# If host mounting /var/spool/postfix, we need to delete old pid file before
+# starting services
+rm -f /var/spool/postfix/pid/master.pid
+
 supervisord
