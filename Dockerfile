@@ -10,11 +10,9 @@ RUN yum install -y epel-release && yum update -y && \
 RUN sed -i -e "s/^nodaemon=false/nodaemon=true/" /etc/supervisord.conf
 RUN sed -i -e 's/inet_interfaces = localhost/inet_interfaces = all/g' /etc/postfix/main.cf
 
-COPY etc/*.conf /etc/
-COPY etc/rsyslog.d/* /etc/rsyslog.d
+COPY etc/ /etc/
 COPY run.sh /
 RUN chmod +x /run.sh
-COPY etc/supervisord.d/*.ini /etc/supervisord.d/
 RUN newaliases
 
 EXPOSE 25
