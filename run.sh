@@ -70,4 +70,4 @@ add_config_value "mynetworks" "${nets}"
 # starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-supervisord
+exec supervisord
