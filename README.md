@@ -75,6 +75,23 @@ for authentication (like Thunderbird or Outlook). First you need to enable acces
 Also take into account that email `From:` header will contain the email address of the account being used to
 authenticate against the Gmail SMTP server(SMTP_USERNAME), the one on the email will be ignored by Gmail unless you [add it as an alias](https://support.google.com/mail/answer/22370).
 
+#### Temporarily hold mail in queue
+
+You can use this docker instance as a smart relay host: The instances collects the mail from docker instances and relays it to your mail server. To perform maintenance on the actual mail serveryou may want to temporarily hold the mail to send it later.
+To do this, attach to the instance and edit `/etc/postfix/main.cnf`:
+```header_checks=static:HOLD```
+After, hold everything in the queue with:
+```postsuper -h ALL```
+And reload postfix:
+```postfix reload```
+You can now safely perform maintenance on your mail server while the smart relay holds any incoming mail until you release it for delivery.
+To release the mail again, remove the configuration and reload postfix. Afterwards, unhold the mails and send it with:
+```
+postsuper -H all
+postqueue -f
+```
+
+
 
 ### Debugging
 If you need troubleshooting the container you can set the environment variable _DEBUG=yes_ for a more verbose output.
