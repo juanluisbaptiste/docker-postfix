@@ -91,7 +91,15 @@ postsuper -H all
 postqueue -f
 ```
 
+### Persistent queue
 
+If you want to use this in production, you may want the queue to be more permanent then a docker instance. To do that, add this to the end of the docker-compose file:
+```
+     - mail_queue:/var/spool/postfix 
+  volumes: 
+    mail_queue:
+``` 
+The mail queue will remain until you do you down the volume (`docker-compose down -v`).
 
 ### Debugging
 If you need troubleshooting the container you can set the environment variable _DEBUG=yes_ for a more verbose output.
