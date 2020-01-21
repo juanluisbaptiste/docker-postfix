@@ -18,7 +18,7 @@ function add_config_value() {
 [ -z "${SMTP_PASSWORD}" ] && echo "SMTP_PASSWORD is not set" && exit 1
 [ -z "${SERVER_HOSTNAME}" ] && echo "SERVER_HOSTNAME is not set" && exit 1
 
-SMTP_PORT="${SMTP_PORT-587}"
+SMTP_PORT="${SMTP_PORT:-587}"
 
 #Get the domain from the server host name
 DOMAIN=`echo ${SERVER_HOSTNAME} |awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//'`
