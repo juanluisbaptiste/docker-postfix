@@ -5,7 +5,7 @@
 function add_config_value() {
   local key=${1}
   local value=${2}
-  local config_file=${3:-/etc/postfix/main.cf}
+  # local config_file=${3:-/etc/postfix/main.cf}
   [ "${key}" == "" ] && echo "ERROR: No key set !!" && exit 1
   [ "${value}" == "" ] && echo "ERROR: No value set !!" && exit 1
 
@@ -21,7 +21,7 @@ function add_config_value() {
 SMTP_PORT="${SMTP_PORT-587}"
 
 #Get the domain from the server host name
-DOMAIN=`echo ${SERVER_HOSTNAME} |awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//'`
+DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
 
 # Set needed config options
 add_config_value "myhostname" ${SERVER_HOSTNAME}
