@@ -44,7 +44,7 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   fi
 fi
 
-#Set header tag  
+#Set header tag
 if [ ! -z "${SMTP_HEADER_TAG}" ]; then
   postconf -e "header_checks = regexp:/etc/postfix/header_tag"
   echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
@@ -70,4 +70,4 @@ add_config_value "mynetworks" "${nets}"
 # starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-exec supervisord
+exec supervisord -c /etc/supervisord.conf
