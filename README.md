@@ -7,7 +7,17 @@ Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no loca
 
 It also includes rsyslog to enable logging to stdout.
 
+
 _If you want to follow the development of this project check out [my blog](http://not403.blogspot.com.co/search/label/postfix)._
+
+### Available image tags
+
+This image has been built on CentOS 7 since its inception, but the new CentOS 8 does [not include supervisor](https://github.com/juanluisbaptiste/docker-postfix/issues/16) anymore, so I have started migrating this image to Alpine linux. So currently there are two image tags available:
+
+  * juanluisbaptiste/postfix:latest, current CentOS 7 based image
+  * juanluisbaptiste/postfix:alpine, new Alpine based image
+
+If testing goes well for some time, then the current CentOS image will be replaced by the new Alpine one, and _latest_ tag will point to it.
 
 ### Build instructions
 
@@ -42,13 +52,13 @@ The following env variable(s) are optional.
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
-    docker run -d --name postfix -p "25:25"  \ 
+    docker run -d --name postfix -p "25:25"  \
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
            juanluisbaptiste/postfix
-    
+
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
     docker run -d --name postfix -P \
