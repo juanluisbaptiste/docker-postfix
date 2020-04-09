@@ -24,11 +24,11 @@ If testing goes well for some time, then the current CentOS image will be replac
 Clone this repo and then:
 
     cd docker-Postfix
-    sudo docker build -t postfix .
+    sudo docker build -t juanluisbaptiste/postfix .
 
 Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.dev.yml) files:
 
-    sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+    sudo docker-compose build
 
 For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
 
