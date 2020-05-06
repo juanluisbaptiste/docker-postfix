@@ -28,11 +28,12 @@ add_config_value "myhostname" ${SERVER_HOSTNAME}
 add_config_value "mydomain" ${DOMAIN}
 add_config_value "mydestination" '$myhostname'
 add_config_value "myorigin" '$mydomain'
-add_config_value "relayhost" "[${SMTP_SERVER}]:${SMTP_PORT}"
+[ -z "${NO_RELAY}" ] && add_config_value "relayhost" "[${SMTP_SERVER}]:${SMTP_PORT}"
 add_config_value "smtp_use_tls" "yes"
 add_config_value "smtp_sasl_auth_enable" "yes"
 add_config_value "smtp_sasl_password_maps" "hash:/etc/postfix/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
+add_config_value "maillog_file" "/dev/stdout"
 
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd ]; then
@@ -70,4 +71,4 @@ add_config_value "mynetworks" "${nets}"
 # starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-exec supervisord -c /etc/supervisord.conf
+exec /usr/sbin/postfix -c /etc/postfix start-fg
