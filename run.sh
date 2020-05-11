@@ -13,6 +13,9 @@ function add_config_value() {
  postconf -e "${key} = ${value}"
 }
 
+# Read password from file to aviod unsecure env variables
+[ -n "${SMTP_PASSWORD_FILE}" ] && read SMTP_PASSWORD < ${SMTP_PASSWORD_FILE}
+
 [ -z "${SMTP_SERVER}" ] && echo "SMTP_SERVER is not set" && exit 1
 [ -z "${SMTP_USERNAME}" ] && echo "SMTP_USERNAME is not set" && exit 1
 [ -z "${SMTP_PASSWORD}" ] && echo "SMTP_PASSWORD is not set" && exit 1
