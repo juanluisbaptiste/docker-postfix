@@ -50,7 +50,9 @@ The following env variable(s) are optional.
 * `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
     -e SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'
 
-* `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables.
+* `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables. Used like
+    -e SMTP_PASSWORD_FILE=/secrets/smtp_password
+    -v $(pwd)/secrets/:/secrets/
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
