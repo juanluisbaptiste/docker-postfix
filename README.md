@@ -41,7 +41,7 @@ The following env variables need to be passed to the container:
 * `SMTP_SERVER` Server address of the SMTP server to use.
 * `SMTP_PORT` (Optional, Default value: 587) Port address of the SMTP server to use.
 * `SMTP_USERNAME` Username to authenticate with.
-* `SMTP_PASSWORD` Password of the SMTP user.
+* `SMTP_PASSWORD` Password of the SMTP user. If `SMTP_PASSWORD_FILE` is set, not needed.
 * `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
 
 The following env variable(s) are optional.
@@ -49,6 +49,10 @@ The following env variable(s) are optional.
 
 * `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
     -e SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'
+
+* `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables. Used like
+    -e SMTP_PASSWORD_FILE=/secrets/smtp_password
+    -v $(pwd)/secrets/:/secrets/
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
