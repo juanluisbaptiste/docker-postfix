@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Docker Prepare
+        if: success()
+        uses: crazy-max/ghaction-docker-buildx@v3.2.0
+
+      - name: Docker Login
+        if: success()
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+
+      - name: Docker Release
+        if: success()
+        run: |
+          . ./parse-repo.sh
+          export REPO="virb3/${REPO}"
+          docker buildx build \
+            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
+            --push \
+            --build-arg "VERSION=${VERSION}" \
+            --tag "${REPO}:${VERSION}" \
+            --tag "${REPO}:${VERSION_MAJOR}" \
+            --tag "${REPO}:${VERSION_MINOR}" \
+            --tag "${REPO}:latest" \
+            --file ./Dockerfile ./

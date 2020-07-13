@@ -1,0 +1,13 @@
+---
+branches:
+  - name: master
+    type: release
+  - name: migrate_to_alpine
+    type: prerelease
+    prerelease: alpine-rc
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/github"
+    - successComment: false
+      failComment: false

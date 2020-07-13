@@ -1,0 +1,23 @@
+name: Tag
+
+on:
+  push:
+    branches: [migrate_to_alpine]
+  pull_request:
+    branches: [migrate_to_alpine]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Version
+        if: success()
+        uses: cycjimmy/semantic-release-action@v2.5.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
