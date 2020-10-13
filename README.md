@@ -26,7 +26,7 @@ Clone this repo and then:
     cd docker-Postfix
     sudo docker build -t juanluisbaptiste/postfix .
 
-Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.overrides.yml) files:
+Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.override.yml) files:
 
     sudo docker-compose build
 
