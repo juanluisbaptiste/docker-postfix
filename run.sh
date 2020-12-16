@@ -38,6 +38,11 @@ add_config_value "smtp_sasl_password_maps" "hash:/etc/postfix/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
 add_config_value "always_add_missing_headers" "${ALWAYS_ADD_MISSING_HEADERS:-no}"
 
+if [ "${SMTP_PORT}" = "465" ]; then
+  add_config_value "smtp_tls_wrappermode" "yes"
+  add_config_value "smtp_tls_security_level" "encrypt"
+fi
+
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
