@@ -1,11 +1,11 @@
 version: '2'
 services:
   postfix:
-    image: juanluisbaptiste/postfix:latest
+    image: revsystem/postfix:alpine
     expose:
     - "25"
     env_file:
       - .env
     restart: always
     volumes:
-     - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/localtime:/etc/localtime:ro"
