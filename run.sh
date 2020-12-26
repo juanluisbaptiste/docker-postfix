@@ -43,6 +43,7 @@ if [ "${SMTP_PORT}" = "465" ]; then
   add_config_value "smtp_tls_security_level" "encrypt"
 fi
 
+
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1

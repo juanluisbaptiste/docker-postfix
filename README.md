@@ -8,6 +8,7 @@ Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no loca
 
 It also includes rsyslog to enable logging to stdout.
 
+
 _If you want to follow the development of this project check out [Author's blog](https://www.juanbaptiste.tech/category/postfx)._
 
 ## Available image tags
