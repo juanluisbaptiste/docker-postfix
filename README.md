@@ -1,38 +1,38 @@
 # docker-postfix
-[![Docker Build Status](https://img.shields.io/docker/build/juanluisbaptiste/postfix?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/build/)
-[![Docker Stars](https://img.shields.io/docker/stars/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
+
+[![Docker Build Status](https://img.shields.io/docker/cloud/build/revsystem/postfix?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/build/)
+[![Docker Stars](https://img.shields.io/docker/stars/revsystem/postfix.svg?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/revsystem/postfix.svg?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/)
 
 Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no local authentication enabled (to be run in a secure LAN).
 
 It also includes rsyslog to enable logging to stdout.
 
 
-_If you want to follow the development of this project check out [my blog](https://www.juanbaptiste.tech/category/postfx)._
+_If you want to follow the development of this project check out [Author's blog](https://www.juanbaptiste.tech/category/postfx)._
 
-### Available image tags
+## Available image tags
 
-This image has been built on CentOS 7 since its inception, but the new CentOS 8 does [not include supervisor](https://github.com/juanluisbaptiste/docker-postfix/issues/16) anymore, so I have started migrating this image to Alpine linux. So currently there are two image tags available:
+The [Original image](https://github.com/juanluisbaptiste/docker-postfix) has been built on CentOS 7 since its inception, but the new CentOS 8 does [not include supervisor](https://github.com/juanluisbaptiste/docker-postfix/issues/16) anymore, so Author has started migrating.
+This image uses the latest alpine which support multi-CPU architecture. It works well on Raspberry Pi 3B+.
+( This image is forked from [juanluisbaptiste/docker-postfix](https://github.com/juanluisbaptiste/docker-postfix/). )
 
-  * juanluisbaptiste/postfix:latest, current CentOS 7 based image
-  * juanluisbaptiste/postfix:alpine, new Alpine based image
+* revsystem/postfix:alpine, Alpine based image
 
-If testing goes well for some time, then the current CentOS image will be replaced by the new Alpine one, and _latest_ tag will point to it.
-
-### Build instructions
+## Build instructions
 
 Clone this repo and then:
 
     cd docker-Postfix
-    sudo docker build -t juanluisbaptiste/postfix .
+    docker build -t revsystem/postfix .
 
-Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.override.yml) files:
+Or you can use the provided [docker-compose](https://github.com/revsystem/docker-postfix/blob/master/docker-compose.overrides.yml) files:
 
-    sudo docker-compose build
+    docker-compose build
 
-For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
+For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/r/revsystem/postfix/), which can be pulled with this command:
 
-    sudo docker pull juanluisbaptiste/postfix:latest
+    docker pull revsystem/postfix:alpine
 
 ### How to run it
 
@@ -45,6 +45,7 @@ The following env variables need to be passed to the container:
 * `SERVER_HOSTNAME` Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
 
 The following env variable(s) are optional.
+
 * `SMTP_HEADER_TAG` This will add a header for tracking messages upstream. Helpful for spam filters. Will appear as "RelayTag: ${SMTP_HEADER_TAG}" in the email headers.
 
 * `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
@@ -66,7 +67,7 @@ To use this container from anywhere, the 25 port or the one specified by `SMTP_P
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
-           juanluisbaptiste/postfix
+           revsystem/postfix:alpine
 
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
@@ -74,12 +75,12 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
-           -e SERVER_HOSTNAME=helpdesk.mycompany.com \           
-           juanluisbaptiste/postfix
+           -e SERVER_HOSTNAME=helpdesk.mycompany.com \
+           revsystem/postfix:alpine
 
-Or if you can start the service using the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) file for production use:
+Or if you can start the service using the provided [docker-compose](https://github.com/revsystem/docker-postfix/blob/master/docker-compose.yml) file for production use:
 
-    sudo docker-compose up -d
+    docker-compose up -d
 
 To see the email logs in real time:
 
@@ -88,12 +89,12 @@ To see the email logs in real time:
 #### A note about using gmail as a relay
 
 Gmail by default [does not allow email clients that don't use OAUTH 2](http://googleonlinesecurity.blogspot.co.uk/2014/04/new-security-measures-will-affect-older.html)
-for authentication (like Thunderbird or Outlook). First you need to enable access to "Less secure apps" on your
-[google settings](https://www.google.com/settings/security/lesssecureapps).
+for authentication (like Thunderbird or Outlook). First you could enable access to "Less secure apps" on your
+[google settings](https://www.google.com/settings/security/lesssecureapps). But, Google [does not recommend it](https://support.google.com/a/answer/6260879?hl=en).
 
 Also take into account that email `From:` header will contain the email address of the account being used to
 authenticate against the Gmail SMTP server(SMTP_USERNAME), the one on the email will be ignored by Gmail unless you [add it as an alias](https://support.google.com/mail/answer/22370).
 
+## Debugging
 
-### Debugging
 If you need troubleshooting the container you can set the environment variable _DEBUG=yes_ for a more verbose output.

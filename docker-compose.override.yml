@@ -1,6 +1,7 @@
 version: '2'
 services:
   postfix:
+    image: revsystem/postfix:dev
     build:
       context: .
       dockerfile: Dockerfile
