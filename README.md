@@ -17,7 +17,7 @@ The [Original image](https://github.com/juanluisbaptiste/docker-postfix) has bee
 This image uses the latest alpine which support multi-CPU architecture. It works well on Raspberry Pi 3B+.
 ( This image is forked from [juanluisbaptiste/docker-postfix](https://github.com/juanluisbaptiste/docker-postfix/). )
 
-* revsystem/postfix:alpine, Alpine based image
+* revsystem/postfix:latest, Alpine based image
 
 ## Build instructions
 
@@ -32,7 +32,7 @@ Or you can use the provided [docker-compose](https://github.com/revsystem/docker
 
 For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/r/revsystem/postfix/), which can be pulled with this command:
 
-    docker pull revsystem/postfix:alpine
+    docker pull revsystem/postfix:latest
 
 ### How to run it
 
@@ -67,7 +67,7 @@ To use this container from anywhere, the 25 port or the one specified by `SMTP_P
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
-           revsystem/postfix:alpine
+           revsystem/postfix:latest
 
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
@@ -76,7 +76,7 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
-           revsystem/postfix:alpine
+           revsystem/postfix:latest
 
 Or if you can start the service using the provided [docker-compose](https://github.com/revsystem/docker-postfix/blob/master/docker-compose.yml) file for production use:
 
