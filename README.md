@@ -1,5 +1,5 @@
 # docker-postfix
-[![Docker Build Status](https://img.shields.io/docker/build/juanluisbaptiste/postfix?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/build/)
+[![Docker Build Status](https://img.shields.io/docker/cloud/build/juanluisbaptiste/postfix?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/builds/)
 [![Docker Stars](https://img.shields.io/docker/stars/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
 
