@@ -1,9 +1,9 @@
 #Dockerfile for a Postfix email relay service
-FROM alpine:3.12
+FROM alpine:3.13
 MAINTAINER Juan Luis Baptiste juan.baptiste@gmail.com
 
 RUN apk update && \
-    apk add bash gawk cyrus-sasl cyrus-sasl-plain cyrus-sasl-login cyrus-sasl-crammd5 mailx \
+    apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx \
     perl supervisor postfix rsyslog && \
     rm -rf /var/cache/apk/* && \
     mkdir -p /var/log/supervisor/ /var/run/supervisor/ && \
