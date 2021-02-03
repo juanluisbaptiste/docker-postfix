@@ -5,7 +5,7 @@
 function add_config_value() {
   local key=${1}
   local value=${2}
-  local config_file=${3:-/etc/postfix/main.cf}
+  # local config_file=${3:-/etc/postfix/main.cf}
   [ "${key}" == "" ] && echo "ERROR: No key set !!" && exit 1
   [ "${value}" == "" ] && echo "ERROR: No value set !!" && exit 1
 
@@ -24,7 +24,7 @@ if [ -n "${SMTP_PASSWORD_FILE}" ]; then [ -f "${SMTP_PASSWORD_FILE}" ] && read S
 SMTP_PORT="${SMTP_PORT:-587}"
 
 #Get the domain from the server host name
-DOMAIN=`echo ${SERVER_HOSTNAME} |awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//'`
+DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
 
 # Set needed config options
 add_config_value "myhostname" ${SERVER_HOSTNAME}
@@ -34,7 +34,7 @@ add_config_value "myorigin" '$mydomain'
 add_config_value "relayhost" "[${SMTP_SERVER}]:${SMTP_PORT}"
 add_config_value "smtp_use_tls" "yes"
 add_config_value "smtp_sasl_auth_enable" "yes"
-add_config_value "smtp_sasl_password_maps" "hash:/etc/postfix/sasl_passwd"
+add_config_value "smtp_sasl_password_maps" "lmdb:/etc/postfix/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
 add_config_value "always_add_missing_headers" "${ALWAYS_ADD_MISSING_HEADERS:-no}"
 
@@ -53,7 +53,7 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   fi
 fi
 
-#Set header tag  
+#Set header tag
 if [ ! -z "${SMTP_HEADER_TAG}" ]; then
   postconf -e "header_checks = regexp:/etc/postfix/header_tag"
   echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
@@ -86,4 +86,4 @@ fi
 # starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-exec supervisord
+exec supervisord -c /etc/supervisord.conf
