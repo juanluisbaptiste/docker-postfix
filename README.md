@@ -3,7 +3,7 @@
 [![Docker Stars](https://img.shields.io/docker/stars/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/juanluisbaptiste/postfix.svg?style=flat-square)](https://hub.docker.com/r/juanluisbaptiste/postfix/)
 
-Simple Postfix SMTP TLS relay [docker](http://www.docker.com) image with no local authentication enabled (to be run in a secure LAN).
+Simple Postfix SMTP TLS relay [docker](http://www.docker.com) alpine based image with no local authentication enabled (to be run in a secure LAN).
 
 It also includes rsyslog to enable logging to stdout.
 
@@ -12,12 +12,11 @@ _If you want to follow the development of this project check out [my blog](https
 
 ### Available image tags
 
-This image has been built on CentOS 7 since its inception, but the new CentOS 8 does [not include supervisor](https://github.com/juanluisbaptiste/docker-postfix/issues/16) anymore, so I have started migrating this image to Alpine linux. So currently there are two image tags available:
+Currently we only handle a rolling release of new versions so only _latest_ tag is available, but there is [work in progress](https://github.com/juanluisbaptiste/docker-postfix/pull/29) to start releasing versioned images to be able to pin to specific versions in production deployments.
 
-  * juanluisbaptiste/postfix:latest, current CentOS 7 based image
-  * juanluisbaptiste/postfix:alpine, new Alpine based image
-
-If testing goes well for some time, then the current CentOS image will be replaced by the new Alpine one, and _latest_ tag will point to it.
+*_NOTES_*:
+  * The _alpine_ tag has been switched to use the master branch, but it's irrelevant as it is the same as _latest_.
+  * Old CentOS 7 based image is avaiable on the _centos_base_image branch_, but it is not being developed any more.
 
 ### Build instructions
 
