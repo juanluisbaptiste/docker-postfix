@@ -1,6 +1,17 @@
+FROM alpine:edge AS builder
+RUN apk update
+RUN apk upgrade
+RUN apk add --update go gcc g++ elogind-dev
+WORKDIR /src
+COPY postfix_exporter/go.mod postfix_exporter/go.sum ./
+RUN go mod download
+RUN go mod verify
+ADD postfix_exporter .
+RUN  CGO_ENABLED=1 GOOS=linux go build  -o /bin/postfix_exporter -tags nosystemd
+
 #Dockerfile for a Postfix email relay service
 FROM alpine:3.13
-MAINTAINER Juan Luis Baptiste juan.baptiste@gmail.com
+MAINTAINER Panagiotis Bariamis
 
 RUN apk update && \
     apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx \
@@ -14,6 +25,6 @@ COPY run.sh /
 RUN chmod +x /run.sh
 RUN newaliases
 
-EXPOSE 25
-#ENTRYPOINT ["/run.sh"]
+EXPOSE 25 587 9154
+
 CMD ["/run.sh"]

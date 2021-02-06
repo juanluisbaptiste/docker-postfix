@@ -1,7 +1,0 @@
-version: '2'
-services:
-  postfix:
-    image: juanluisbaptiste/postfix:dev
-    build:
-      context: .
-      dockerfile: Dockerfile
