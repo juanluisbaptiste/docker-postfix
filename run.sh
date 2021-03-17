@@ -37,6 +37,9 @@ add_config_value "smtp_sasl_auth_enable" "yes"
 add_config_value "smtp_sasl_password_maps" "lmdb:/etc/postfix/sasl_passwd"
 add_config_value "smtp_sasl_security_options" "noanonymous"
 add_config_value "always_add_missing_headers" "${ALWAYS_ADD_MISSING_HEADERS:-no}"
+#Also use "native" option to allow looking up hosts added to /etc/hosts via
+# docker options (issue #51)
+add_config_value "smtp_host_lookup" "native,dns"
 
 if [ "${SMTP_PORT}" = "465" ]; then
   add_config_value "smtp_tls_wrappermode" "yes"
