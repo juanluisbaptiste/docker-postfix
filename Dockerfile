@@ -17,3 +17,6 @@ RUN newaliases
 EXPOSE 25
 #ENTRYPOINT ["/run.sh"]
 CMD ["/run.sh"]
+
+HEALTHCHECK --interval=10s --timeout=5s \
+  CMD echo EHLO localhost | nc 127.0.0.1 25 | grep 250 || exit 1
