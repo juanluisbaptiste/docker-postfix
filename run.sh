@@ -26,6 +26,7 @@ SMTP_PORT="${SMTP_PORT:-587}"
 DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
 
 # Set needed config options
+add_config_value "maillog_file" "/dev/stdout"
 add_config_value "myhostname" ${SERVER_HOSTNAME}
 add_config_value "mydomain" ${DOMAIN}
 add_config_value "mydestination" 'localhost'
@@ -90,4 +91,4 @@ fi
 # starting services
 rm -f /var/spool/postfix/pid/master.pid
 
-exec supervisord -c /etc/supervisord.conf
+exec /usr/sbin/postfix -c /etc/postfix start-fg

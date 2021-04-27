@@ -13,9 +13,6 @@ This image is available for the following architectures:
 * armv7
 * arm64
 
-It also includes rsyslog to enable logging to stdout.
-
-
 _If you want to follow the development of this project check out [my blog](https://www.juanbaptiste.tech/category/postfx)._
 
 ### Available image tags
