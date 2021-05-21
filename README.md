@@ -66,6 +66,11 @@ The following env variable(s) are optional.
 * `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables. Used like
     -e SMTP_PASSWORD_FILE=/secrets/smtp_password
     -v $(pwd)/secrets/:/secrets/
+
+* `SMTP_USERNAME_FILE` Setting this to a mounted file containing the username, to avoid usernames in env variables. Used like
+    -e SMTP_USERNAME_FILE=/secrets/smtp_username
+    -v $(pwd)/secrets/:/secrets/
+
 * `ALWAYS_ADD_MISSING_HEADERS` This is related to the [always\_add\_missing\_headers](http://www.postfix.org/postconf.5.html#always_add_missing_headers) Postfix option (default: `no`). If set to `yes`, Postfix will always add missing headers among `From:`, `To:`, `Date:` or `Message-ID:`.
 
 * `OVERWRITE_FROM` This will rewrite the from address overwriting it with the specified address for all email being relayed. Example settings:
