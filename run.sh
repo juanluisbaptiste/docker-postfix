@@ -30,7 +30,7 @@ DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
 add_config_value "maillog_file" "/dev/stdout"
 add_config_value "myhostname" ${SERVER_HOSTNAME}
 add_config_value "mydomain" ${DOMAIN}
-add_config_value "mydestination" 'localhost'
+add_config_value "mydestination" "${DESTINATION:-localhost}"
 add_config_value "myorigin" '$mydomain'
 add_config_value "relayhost" "[${SMTP_SERVER}]:${SMTP_PORT}"
 add_config_value "smtp_use_tls" "yes"
@@ -54,7 +54,7 @@ if [ ! -f /etc/postfix/sasl_passwd -a ! -z "${SMTP_USERNAME}" ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
   if [ $? -gt 0 ]; then
     echo "Adding SASL authentication configuration"
-    echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
+    echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}@${DESTINATION:-localhost}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
     postmap /etc/postfix/sasl_passwd
   fi
 fi
