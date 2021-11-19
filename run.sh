@@ -86,6 +86,12 @@ if [ ! -z "${SMTP_NETWORKS}" ]; then
 fi
 add_config_value "mynetworks" "${nets}"
 
+# Set SMTPUTF8
+if [ ! -z "${SMTPUTF8_ENABLE}" ]; then
+  postconf -e "smtputf8_enable = ${SMTPUTF8_ENABLE}"
+  echo "Setting configuration option smtputf8_enable with value: ${SMTPUTF8_ENABLE}"
+fi
+
 if [ ! -z "${OVERWRITE_FROM}" ]; then
   echo -e "/^From:.*$/ REPLACE From: $OVERWRITE_FROM" > /etc/postfix/smtp_header_checks
   postmap /etc/postfix/smtp_header_checks
