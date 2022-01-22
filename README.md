@@ -1,6 +1,6 @@
 # docker-postfix
 
-[![Docker Build Status](https://img.shields.io/docker/cloud/build/revsystem/postfix?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/build/)
+[![Docker Build Status](https://img.shields.io/docker/cloud/build/revsystem/postfix?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/builds/)
 [![Docker Stars](https://img.shields.io/docker/stars/revsystem/postfix.svg?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/revsystem/postfix.svg?style=flat-square)](https://hub.docker.com/r/revsystem/postfix/)
 
