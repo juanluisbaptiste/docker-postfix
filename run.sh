@@ -86,6 +86,12 @@ if [ ! -z "${OVERWRITE_FROM}" ]; then
   echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
 fi
 
+# Set message_size_limit
+if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
+  postconf -e "message_size_limit = ${MESSAGE_SIZE_LIMIT}"
+  echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before
