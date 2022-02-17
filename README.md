@@ -44,9 +44,9 @@ Or you can use the provided [docker-compose](https://github.com/revsystem/docker
 
     docker-compose build
 
-For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/r/revsystem/postfix/), which can be pulled with this command:
+For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [GitHub Container Registry](https://github.com/revsystem/docker-postfix/pkgs/container/postfix), which can be pulled with this command:
 
-    docker pull revsystem/postfix:latest
+    docker pull ghcr.io/revsystem/postfix:latest
 
 ### How to run it
 
