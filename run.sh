@@ -61,9 +61,16 @@ fi
 
 #Set header tag
 if [ ! -z "${SMTP_HEADER_TAG}" ]; then
-  postconf -e "header_checks = regexp:/etc/postfix/header_tag"
-  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" > /etc/postfix/header_tag
+  postconf -e "header_checks = regexp:/etc/postfix/header_checks"
+  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" >> /etc/postfix/header_checks
   echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
+fi
+
+#Enable logging of subject line
+if [ "${LOG_SUBJECT}" == "yes" ]; then
+  postconf -e "header_checks = regexp:/etc/postfix/header_checks"
+  echo -e "/^Subject:/ WARN" >> /etc/postfix/header_checks
+  echo "Enabling logging of subject line"
 fi
 
 #Check for subnet restrictions
