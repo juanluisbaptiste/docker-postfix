@@ -49,6 +49,9 @@ if [ "${SMTP_PORT}" = "465" ]; then
   add_config_value "smtp_tls_security_level" "encrypt"
 fi
 
+# Bind to both IPv4 and IPv4
+add_config_value "inet_protocols" "all"
+
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd -a ! -z "${SMTP_USERNAME}" ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
@@ -76,13 +79,25 @@ fi
 #Check for subnet restrictions
 nets='10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
 if [ ! -z "${SMTP_NETWORKS}" ]; then
-        for i in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
-                if grep -Eq "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}" <<<$i ; then
-                        nets+=", $i"
-                else
-                        echo "$i is not in proper IPv4 subnet format. Ignoring."
-                fi
-        done
+  declare ipv6re="^((([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|\
+    ([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|\
+    ([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|\
+    ([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|\
+    :((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}|\
+    ::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|\
+    (2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|\
+    (2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/[0-9]{1,3})$"
+
+  for i in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
+    if grep -Eq "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}" <<<$i ; then
+      nets+=", $i"
+    elif grep -Eq "$ipv6re" <<<$i ; then
+      readarray -d \/ -t arr < <(printf '%s' "$i")
+      nets+=", [${arr[0]}]/${arr[1]}"
+    else
+      echo "$i is not in proper IPv4 or IPv6 subnet format. Ignoring."
+    fi
+  done
 fi
 add_config_value "mynetworks" "${nets}"
 
