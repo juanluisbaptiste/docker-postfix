@@ -1,3 +1,5 @@
+<!-- BEFORE SUBMITTING YOUR PR, PLEASE REMOVE THIS TEXT -->
+<!-- REMOVE START -->
 # Creating a Pull Request
 
 We use github actions to do automatic [semantic versioning](https://github.com/semantic-release/semantic-release), so please use the following nomenclature for the commit message according to the type of change:
@@ -5,6 +7,7 @@ We use github actions to do automatic [semantic versioning](https://github.com/s
 * Prefix with `feat:`, and it will trigger a minor version bump. 
 * Prefix with `fix`:, and it will trigger a patch version bump. 
 * Prefix with `BREAKING CHANGE:`, and it will trigger a major version bump.
+<!-- REMOVE END -->
 
 ## Description of the change
 <!--Please be very clear on the intention of the modifications included in the pull request.-->
