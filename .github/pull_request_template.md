@@ -5,7 +5,7 @@
 We use github actions to do automatic [semantic versioning](https://github.com/semantic-release/semantic-release), so please use the following nomenclature for the commit message according to the type of change:
 
 * Prefix with `feat:`, and it will trigger a minor version bump. 
-* Prefix with `fix`:, and it will trigger a patch version bump. 
+* Prefix with `fix:`, and it will trigger a patch version bump.
 * Prefix with `BREAKING CHANGE:`, and it will trigger a major version bump.
 <!-- REMOVE END -->
 
