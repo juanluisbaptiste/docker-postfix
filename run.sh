@@ -14,8 +14,8 @@ function add_config_value() {
 }
 
 # Read password and username from file to avoid unsecure env variables
-if [ -n "${SMTP_PASSWORD_FILE}" ]; then [ -f "${SMTP_PASSWORD_FILE}" ] && read SMTP_PASSWORD < ${SMTP_PASSWORD_FILE} || echo "SMTP_PASSWORD_FILE defined, but file not existing, skipping."; fi
-if [ -n "${SMTP_USERNAME_FILE}" ]; then [ -f "${SMTP_USERNAME_FILE}" ] && read SMTP_USERNAME < ${SMTP_USERNAME_FILE} || echo "SMTP_USERNAME_FILE defined, but file not existing, skipping."; fi
+if [ -n "${SMTP_PASSWORD_FILE}" ]; then [ -e "${SMTP_PASSWORD_FILE}" ] && SMTP_PASSWORD=$(cat "${SMTP_PASSWORD_FILE}") || echo "SMTP_PASSWORD_FILE defined, but file not existing, skipping."; fi
+if [ -n "${SMTP_USERNAME_FILE}" ]; then [ -e "${SMTP_USERNAME_FILE}" ] && SMTP_USERNAME=$(cat "${SMTP_USERNAME_FILE}") || echo "SMTP_USERNAME_FILE defined, but file not existing, skipping."; fi
 
 [ -z "${SMTP_SERVER}" ] && echo "SMTP_SERVER is not set" && exit 1
 [ -z "${SERVER_HOSTNAME}" ] && echo "SERVER_HOSTNAME is not set" && exit 1
@@ -85,6 +85,12 @@ if [ ! -z "${SMTP_NETWORKS}" ]; then
         done
 fi
 add_config_value "mynetworks" "${nets}"
+
+# Set SMTPUTF8
+if [ ! -z "${SMTPUTF8_ENABLE}" ]; then
+  postconf -e "smtputf8_enable = ${SMTPUTF8_ENABLE}"
+  echo "Setting configuration option smtputf8_enable with value: ${SMTPUTF8_ENABLE}"
+fi
 
 if [ ! -z "${OVERWRITE_FROM}" ]; then
   echo -e "/^From:.*$/ REPLACE From: $OVERWRITE_FROM" > /etc/postfix/smtp_header_checks

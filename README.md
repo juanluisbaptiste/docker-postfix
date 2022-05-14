@@ -83,6 +83,8 @@ The following env variable(s) are optional.
 
 * `LOG_SUBJECT` This will output the subject line of messages in the log.
 
+* `SMTPUTF8_ENABLE` This will enable (default) or disable support for SMTPUTF8. Valid values are `no` to disable and `yes` to enable. Not setting this variable will use the postfix default, which is `yes`.
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \
