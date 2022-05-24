@@ -79,6 +79,8 @@ The following env variable(s) are optional.
 
 * `DESTINATION` This will define a list of domains from which incoming messages will be accepted.
 
+* `MESSAGE_SIZE_LIMIT` This will change the default limit of 10240000 bytes (10MB).
+
 * `LOG_SUBJECT` This will output the subject line of messages in the log.
 
 * `SMTPUTF8_ENABLE` This will enable (default) or disable support for SMTPUTF8. Valid values are `no` to disable and `yes` to enable. Not setting this variable will use the postfix default, which is `yes`.
