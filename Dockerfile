@@ -1,5 +1,5 @@
 #Dockerfile for a Postfix email relay service
-FROM alpine:3.13
+FROM alpine:3.15
 MAINTAINER Juan Luis Baptiste juan.baptiste@gmail.com
 
 RUN apk update && \
