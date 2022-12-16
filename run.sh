@@ -120,6 +120,12 @@ if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
   echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
 fi
 
+# Set always_bcc
+if [ ! -z "${ALWAYS_BCC}" ]; then
+  postconf -e "always_bcc = ${ALWAYS_BCC}"
+  echo "Setting configuration option always_bcc with value: ${ALWAYS_BCC}"
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before
