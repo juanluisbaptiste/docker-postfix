@@ -14,7 +14,7 @@ services:
   # https://hub.docker.com/r/bleala/postfix
   # https://github.com/Bleala/Postfix-DOCKERIZED
   postfix:
-    image: bleala/postfix:1.0.0
+    image: bleala/postfix:latest
     container_name: postfix
     hostname: postfix
     restart: unless-stopped
