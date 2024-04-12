@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY_NAME }}
-          short-description: "Postfix - a simple SMTP TLS relay alpine based image with no local authentication enabled (to be run in a secure LAN). DOCKERIZED!"
+          short-description: "Postfix - a simple SMTP TLS relay with no local authentication enabled. DOCKERIZED!"
 
       # https://docs.docker.com/engine/install/ubuntu/
       # https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
