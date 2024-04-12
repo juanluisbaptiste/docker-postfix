@@ -1,6 +1,5 @@
 #Dockerfile for a Postfix email relay service
 FROM alpine:3.16
-MAINTAINER Juan Luis Baptiste juan.baptiste@gmail.com
 
 RUN apk update && \
     apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx \
@@ -12,6 +11,11 @@ RUN apk update && \
 COPY run.sh /
 RUN chmod +x /run.sh
 RUN newaliases
+
+# Labeling
+LABEL maintainer="Bleala" \
+        org.opencontainers.image.source="https://github.com/Bleala/Postfix-DOCKERIZED" \
+        org.opencontainers.image.url="https://github.com/Bleala/Postfix-DOCKERIZED"
 
 EXPOSE 25
 #ENTRYPOINT ["/run.sh"]
