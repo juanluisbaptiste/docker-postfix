@@ -1,5 +1,5 @@
 #Dockerfile for a Postfix email relay service
-FROM alpine:3.16
+FROM alpine:3.19.1
 
 RUN apk update && \
     apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx \
