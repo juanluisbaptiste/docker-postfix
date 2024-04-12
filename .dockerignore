@@ -1,0 +1,5 @@
+.gitignore
+.gitattributes
+.gitea
+.github
+_deprecated
