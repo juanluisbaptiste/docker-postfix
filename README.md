@@ -61,7 +61,6 @@ docker run -d --name postfix -p "25:25"  \
         -e SMTP_SERVER=your.mail.server \
         -e SERVER_HOSTNAME=your.mail.server \
         bleala/postfix:latest
-
 ```
 
 But since docker compose is easier to maintain, I'll give you a valid docker compose example:
@@ -141,21 +140,18 @@ You can start the docker-compose.yml with the following command
 
 ```
 docker compose up -d
-
 ```
 
 If you want to see the container logs, you can run
 
 ```
 docker compose logs -f
-
 ```
 
 or
 
 ```
 docker logs -f postfix
-
 ```
 
 #### Google specifics
@@ -202,21 +198,18 @@ Clone this repo and then:
 ```
 cd docker-Postfix
 docker build -t bleala/postfix:dev .
-
 ```
 
 Or you can use the provided [docker-compose.yml](https://github.com/Bleala/Postfix-DOCKERIZED/blob/master/docker/docker-compose.override.yml "docker-compose.yml") file:
 
 ```
 docker compose build
-
 ```
 
 For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://hub.docker.com/r/bleala/postfix/ "Docker Hub"), which can be pulled with this command:
 
 ```
 docker pull bleala/postfix:latest
-
 ```
 
 ---
