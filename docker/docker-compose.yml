@@ -1,0 +1,67 @@
+version: "3.9"
+
+networks:
+  postfix:
+    name: postfix
+    driver: bridge
+
+secrets:
+  smtp_password:
+    file: /path/to/your/secret/file/smtp_password
+
+services:
+  # Postfix SMTP Relay - Simple Postfix SMTP TLS relay docker alpine based image with no local authentication enabled (to be run in a secure LAN).
+  # https://hub.docker.com/r/bleala/postfix
+  # https://github.com/Bleala/Postfix-DOCKERIZED
+  postfix-:
+    image: bleala/postfix:1.0.0
+    container_name: postfix
+    hostname: postfix
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      # Mandatory: Server address of the SMTP server to use.
+      SMTP_SERVER:
+      # Optional: (Default value: 587) Port address of the SMTP server to use.
+      SMTP_PORT: 
+      # Optional: Username to authenticate with.
+      SMTP_USERNAME:
+      # Optional (Mandatory if SMTP_USERNAME is set): Password of the SMTP user. (Not needed if SMTP_PASSWORD_FILE is used)
+      SMTP_PASSWORD:
+      # Mandatory: Server hostname for the Postfix container. Emails will appear to come from the hostname's domain.
+      SERVER_HOSTNAME:
+      # Optional: This will add a header for tracking messages upstream. Helpful for spam filters. Will appear as "RelayTag: ${SMTP_HEADER_TAG}" in the email headers.
+      SMTP_HEADER_TAG:
+      # Optional: Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'.
+      SMTP_NETWORKS:
+      # Optional: Set this to a mounted file containing the password, to avoid passwords in env variables.
+      SMTP_PASSWORD_FILE:
+      # Optional: Set this to yes to always add missing From:, To:, Date: or Message-ID: headers.
+      ALWAYS_ADD_MISSING_HEADERS: yes
+      # Optional: This will rewrite the from address overwriting it with the specified address for all email being relayed.
+      OVERWRITE_FROM: "Your Name <email@company.com>"
+      # Optional: This will use allow you to set a custom $mydestination value. Default is localhost.
+      DESTINATION:
+      # Optional: This will output the subject line of messages in the log.
+      LOG_SUBJECT: yes
+      # Optional: This will disable (no) or enable (yes) the use of SMTPUTF8
+      SMTPUTF8_ENABLE: no
+      # Optional: This will use allow you to set a custom $message_size_limit value. Default is 10240000.
+      MESSAGE_SIZE_LIMIT:
+    env_file:
+      - .env
+    networks:
+      postfix:
+    ports:
+      - target: 25
+        published: 25
+        protocol: tcp
+        mode: host
+    secrets:
+      - smtp_password
+    volumes:
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
