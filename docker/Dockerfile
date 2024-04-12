@@ -13,7 +13,7 @@ RUN apk update \
     && apk add --no-cache --upgrade apk-tools \
     && apk upgrade --no-cache --available \
     # Install needed packages
-    apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx postfix \
+    && apk add bash gawk cyrus-sasl cyrus-sasl-login cyrus-sasl-crammd5 mailx postfix \
     # Clear cache
     && rm -rf /var/cache/apk/* \
     # Create log directories
