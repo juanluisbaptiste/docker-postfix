@@ -13,7 +13,7 @@ services:
   # Postfix SMTP Relay - Simple Postfix SMTP TLS relay docker alpine based image with no local authentication enabled (to be run in a secure LAN).
   # https://hub.docker.com/r/bleala/postfix
   # https://github.com/Bleala/Postfix-DOCKERIZED
-  postfix-:
+  postfix:
     image: bleala/postfix:1.0.0
     container_name: postfix
     hostname: postfix
