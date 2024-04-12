@@ -1,12 +1,12 @@
-name: Vdirsyncer Deployment Development
-run-name: Vdirsyncer Deployment For Development Usage 🚀
+name: Postfix Deployment Development
+run-name: Postfix Deployment For Development Usage 🚀
 on:
   push:
     branches:
       - "dev"
 
 jobs:
-  Vdirsyncer-Deployment-Development:
+  Postfix-Deployment-Development:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout

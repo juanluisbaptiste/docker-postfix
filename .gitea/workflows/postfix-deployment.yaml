@@ -1,12 +1,12 @@
-name: Vdirsyncer Deployment
-run-name: Vdirsyncer Deployment For Production Usage 🚀
+name: Postfix Deployment
+run-name: Postfix Deployment For Production Usage 🚀
 on:
   push:
     tags:
       - "*.*.*"
 
 jobs:
-  Vdirsyncer-Deployment:
+  Postfix-Deployment:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPOSITORY_NAME }}
-          short-description: "Vdirsyncer - sync calendars and addressbooks between servers and the local filesystem. DOCKERIZED!"
+          short-description: "Postfix - a simple SMTP TLS relay alpine based image with no local authentication enabled (to be run in a secure LAN). DOCKERIZED!"
 
       # https://docs.docker.com/engine/install/ubuntu/
       # https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
