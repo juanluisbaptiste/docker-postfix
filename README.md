@@ -169,7 +169,7 @@ If you need troubleshooting the container you can set the environment variable `
 
 ### Environment Variables
 
-You can set nine different environment variables if you want to:
+You can set fifteen different environment variables if you want to:
 
 | **Variable** | **Info** | **Value** |
 |:----:|:----:|:----:|
