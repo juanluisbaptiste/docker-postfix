@@ -5,7 +5,7 @@ FROM alpine:3.19.1
 
 # Build Arguments
 ARG ALPINE_VERSION="3.19.1" \
-        IMAGE_VERSION="1.0.0" \
+        IMAGE_VERSION="1.0.1" \
         POSTFIX_VERSION="3.8.6"
 
 # Update and install packages
