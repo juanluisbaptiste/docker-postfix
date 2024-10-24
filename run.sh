@@ -77,29 +77,31 @@ if [ "${LOG_SUBJECT}" == "yes" ]; then
 fi
 
 #Check for subnet restrictions
-nets='10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
-if [ ! -z "${SMTP_NETWORKS}" ]; then
-  declare ipv6re="^((([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|\
-    ([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|\
-    ([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|\
-    ([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|\
-    :((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}|\
-    ::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|\
-    (2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|\
-    (2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/[0-9]{1,3})$"
+DEFAULT_NETS="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+SMTP_NETWORKS=${SMTP_NETWORKS:-""}
+SMTP_NETWORKS_OVERRIDE=${SMTP_NETWORKS_OVERRIDE:-"no"}
+ipv4re="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])/([0-9]|[1-2][0-9]|3[0-2])$"
+ipv6re="^((([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/([0-9]{1,3})$"
 
-  for i in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
-    if grep -Eq "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}" <<<$i ; then
-      nets+=", $i"
-    elif grep -Eq "$ipv6re" <<<$i ; then
-      readarray -d \/ -t arr < <(printf '%s' "$i")
-      nets+=", [${arr[0]}]/${arr[1]}"
-    else
-      echo "$i is not in proper IPv4 or IPv6 subnet format. Ignoring."
+nets=()
+if [ -z "$SMTP_NETWORKS" ]; then
+    nets+=($DEFAULT_NETS)
+else
+    if [ "$SMTP_NETWORKS_OVERRIDE" != "yes" ]; then
+        nets+=($DEFAULT_NETS)
     fi
-  done
+    for net in $(sed 's/,/\ /g' <<<$SMTP_NETWORKS); do
+        if [[ $net =~ $ipv4re || $net =~ $ipv6re ]]; then
+            nets+=("$net")
+        else
+            echo "Invalid network: $net" >&2
+            exit 1
+        fi
+    done
 fi
-add_config_value "mynetworks" "${nets}"
+
+nets_str=$(IFS=, ; echo "${nets[*]}")
+add_config_value "mynetworks" "${nets_str}"
 
 # Set SMTPUTF8
 if [ ! -z "${SMTPUTF8_ENABLE}" ]; then
