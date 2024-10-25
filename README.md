@@ -62,6 +62,7 @@ The following env variable(s) are optional.
 
 * `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
     -e SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'
+* `SMTP_NETWORKS_OVERRIDE` (Optional) Removes default allowed network list, that contains all private network ranges. Useful when one needs to limit access to smaller range or single IPs. To be used only with custom SMTP_NETWORKS value. 
 
 * `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables. Used like
     -e SMTP_PASSWORD_FILE=/secrets/smtp_password
