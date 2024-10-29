@@ -87,6 +87,8 @@ The following env variable(s) are optional.
 
 * `MESSAGE_SIZE_LIMIT` This will change the default limit of 10240000 bytes (10MB).
 
+* `DOMAIN` Override origin domain. If not set, defaults to base domain of server hostname.
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \

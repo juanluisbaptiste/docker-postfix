@@ -23,8 +23,10 @@ if [ -n "${SMTP_USERNAME_FILE}" ]; then [ -e "${SMTP_USERNAME_FILE}" ] && SMTP_U
 
 SMTP_PORT="${SMTP_PORT:-587}"
 
-#Get the domain from the server host name
-DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
+# If not defined, get the domain from the server host name
+if [ -z "${DOMAIN}" ]; then
+  DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
+fi
 
 # Set needed config options
 add_config_value "maillog_file" "/dev/stdout"
