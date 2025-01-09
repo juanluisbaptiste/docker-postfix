@@ -215,14 +215,14 @@ docker pull bleala/postfix:latest
 ---
 
 ## Versions
+**1.0.3 - 09.01.2025:** Dependencies Update - Postfix 3.9.1, Alpine 3.21.2
+
 **1.0.2 - 21.08.2024:** Dependencies Update - Postfix 3.9.0, Alpine 3.20.2
-
-**1.0.1 - 07.06.2024:** Packages Update - Postfix 3.8.6, Alpine 3.19.1
-
-**1.0.0 - 12.04.2024:** Initial Version - Postfix 3.8.6, Alpine 3.19.1
 
 <details>
 <summary>Old Version History</summary><br>
+
+**1.0.1 - 07.06.2024:** Packages Update - Postfix 3.8.6, Alpine 3.19.1
 
 **1.0.0 - 12.04.2024:** Initial Version - Postfix 3.8.6, Alpine 3.19.1
 
