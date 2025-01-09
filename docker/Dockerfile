@@ -1,12 +1,12 @@
 ### Dockerfile for a Postfix email relay service###
 
 # Alpine Base Image
-FROM alpine:3.20.2
+FROM alpine:3.21.2
 
 # Build Arguments
-ARG ALPINE_VERSION="3.20.2" \
-        IMAGE_VERSION="1.0.2" \
-        POSTFIX_VERSION="3.9.0"
+ARG ALPINE_VERSION="3.21.2" \
+        IMAGE_VERSION="1.0.3" \
+        POSTFIX_VERSION="3.9.1"
 
 # Update and install packages
 RUN apk update \
