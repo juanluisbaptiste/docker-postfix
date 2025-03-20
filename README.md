@@ -37,7 +37,12 @@ Additionally the amd64 architecture has the following tags:
 Clone this repo and then:
 
     cd docker-Postfix
-    sudo docker build -t juanluisbaptiste/postfix .
+    sudo docker build -t cyberitas/postfix .
+
+To push a multiplatform version to Docker Hub, you can use the following command:
+
+    docker buildx create --name multiplatform-builder --use
+    docker buildx build --platform linux/amd64,linux/arm64 -t cyberitas/postfix:1.7 --push .
 
 Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.override.yml) files:
 
@@ -45,7 +50,7 @@ Or you can use the provided [docker-compose](https://github.com/juanluisbaptiste
 
 For more information on using multiple compose files [see here](https://docs.docker.com/compose/production/). You can also find a prebuilt docker image from [Docker Hub](https://registry.hub.docker.com/u/juanluisbaptiste/postfix/), which can be pulled with this command:
 
-    sudo docker pull juanluisbaptiste/postfix:latest
+    sudo docker pull cyberitas/postfix:latest
 
 ### How to run it
 
@@ -94,7 +99,7 @@ To use this container from anywhere, the 25 port or the one specified by `SMTP_P
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \
-           juanluisbaptiste/postfix
+           cyberitas/postfix
 
 If you are going to use this container from other docker containers then it's better to just publish the port:
 
@@ -103,7 +108,7 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
            -e SERVER_HOSTNAME=helpdesk.mycompany.com \           
-           juanluisbaptiste/postfix
+           cyberitas/postfix
 
 Or if you can start the service using the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) file for production use:
 
