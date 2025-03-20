@@ -120,6 +120,18 @@ if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
   echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
 fi
 
+# Add transport discards
+if [ ! -z "${TRANSPORT_DISCARD}" ]; then
+  postconf -e "transport_maps = lmdb:/etc/postfix/transport"
+  # Split on comma
+  IFS=',' read -r -a array <<< "${TRANSPORT_DISCARD}"
+  for i in "${array[@]}"; do
+    echo "${i} discard:" >> /etc/postfix/transport
+  done
+  postmap lmdb:/etc/postfix/transport
+  echo "Setting configuration option TRANSPORT_DISCARD with value: ${TRANSPORT_DISCARD}"
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before
