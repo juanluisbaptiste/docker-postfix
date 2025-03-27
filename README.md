@@ -92,6 +92,8 @@ The following env variable(s) are optional.
 
 * `TRANSPORT_DISCARD` This is a comma separated list of email addresses that will be discarded. These addresses will not be relayed.
 
+* `IGNORE_EHLO_8BITMIME` Appends "smtp_discard_ehlo_keywords = 8BITMIME" to /etc/postfix/main.cf, this resolves failure to send to broken/old Microsoft Exchange.  Resolves "554 5.6.1 Body type not supported by Remote Host"
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \

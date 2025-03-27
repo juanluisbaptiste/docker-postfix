@@ -132,6 +132,13 @@ if [ ! -z "${TRANSPORT_DISCARD}" ]; then
   echo "Setting configuration option TRANSPORT_DISCARD with value: ${TRANSPORT_DISCARD}"
 fi
 
+if [ ! -z "${IGNORE_EHLO_8BITMIME}" ]; then
+  echo "smtp_discard_ehlo_keywords = 8BITMIME" >> /etc/postfix/main.cf
+  # Older broken Microsoft Exchange advertises 8BITMIME in response to EHLO
+  # Attempting to deliver will fail with error: 554 5.6.1 Body type not supported by Remote Host
+  # Postfix main.cf 'smtp_discard_ehlo_keywords = 8BITMIME' instructs postfix to ignore the 8BITMIME
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before
