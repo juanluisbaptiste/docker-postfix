@@ -15,7 +15,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.API_GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout without token
         if: github.event_name == 'pull_request'
@@ -37,4 +37,4 @@ jobs:
         # with:
         #   semantic_version: 17.4
         env:
-          GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
