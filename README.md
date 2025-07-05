@@ -61,7 +61,9 @@ The following env variable(s) are optional.
 * `SMTP_HEADER_TAG` This will add a header for tracking messages upstream. Helpful for spam filters. Will appear as "RelayTag: ${SMTP_HEADER_TAG}" in the email headers.
 
 * `SMTP_NETWORKS` Setting this will allow you to add additional, comma seperated, subnets to use the relay. Used like
-    -e SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'
+    -e `SMTP_NETWORKS='xxx.xxx.xxx.xxx/xx,xxx.xxx.xxx.xxx/xx'`.
+
+    **NOTE:** This option only works when running the container with no network isolation using Docker's [host mode](https://docs.docker.com/engine/network/tutorials/host/), so the container can interact with the Docker host's networks. This means that you will be running a _SMTP relay with no authentication in your network_. Use this option with caution, and have in mind that it may be removed in the future.
 
 * `SMTP_PASSWORD_FILE` Setting this to a mounted file containing the password, to avoid passwords in env variables. Used like
     -e SMTP_PASSWORD_FILE=/secrets/smtp_password
@@ -100,7 +102,7 @@ If you are going to use this container from other docker containers then it's be
            -e SMTP_SERVER=smtp.bar.com \
            -e SMTP_USERNAME=foo@bar.com \
            -e SMTP_PASSWORD=XXXXXXXX \
-           -e SERVER_HOSTNAME=helpdesk.mycompany.com \           
+           -e SERVER_HOSTNAME=helpdesk.mycompany.com \
            juanluisbaptiste/postfix
 
 Or if you can start the service using the provided [docker-compose](https://github.com/juanluisbaptiste/docker-postfix/blob/master/docker-compose.yml) file for production use:
