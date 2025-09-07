@@ -1,4 +1,4 @@
-version: '2'
+name: postfix
 services:
   postfix:
     image: juanluisbaptiste/postfix:latest
@@ -8,4 +8,4 @@ services:
       - .env
     restart: always
     volumes:
-     - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/localtime:/etc/localtime:ro"
