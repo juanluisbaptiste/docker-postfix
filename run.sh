@@ -116,6 +116,17 @@ if [ ! -z "${OVERWRITE_FROM}" ]; then
   echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
 fi
 
+# Discard emails to not allowed recipient domains
+if [ ! -z "${ALLOW_DOMAINS}" ]; then
+  echo "Outgoing email will be discarded with exception for allowed domains."
+  for allow_domain in ${ALLOW_DOMAINS}; do
+    echo "${allow_domain} :" >> /etc/postfix/transport
+    echo "Allow recipients in domain ${allow_domain}."
+  done
+  echo "* discard" >> /etc/postfix/transport
+  postconf -e 'transport_maps = texthash:/etc/postfix/transport'
+fi
+
 # Set message_size_limit
 if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
   postconf -e "message_size_limit = ${MESSAGE_SIZE_LIMIT}"

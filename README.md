@@ -89,6 +89,8 @@ The following env variable(s) are optional.
 
 * `DOMAIN` Override origin domain. If not set, defaults to base domain of server hostname.
 
+* `ALLOW_DOMAINS` Discard all emails with exception to recipient domain specified in space delimited list of domains.
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \
