@@ -119,6 +119,7 @@ fi
 # Discard emails to not allowed recipient domains
 if [ ! -z "${ALLOW_DOMAINS}" ]; then
   echo "Outgoing email will be discarded with exception for allowed domains."
+  > /etc/postfix/transport       # truncate file to start fresh on container restart
   for allow_domain in ${ALLOW_DOMAINS}; do
     echo "${allow_domain} :" >> /etc/postfix/transport
     echo "Allow recipients in domain ${allow_domain}."
