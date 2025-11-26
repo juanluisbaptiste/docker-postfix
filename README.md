@@ -13,7 +13,7 @@ This image is available for the following architectures:
 * armv7
 * arm64
 
-_If you want to follow the development of this project check out [my blog](https://www.juanbaptiste.tech/category/postfx)._
+_If you want to follow the development of this project check out [my blog](https://www.juanbaptiste.tech/category/postfix)._
 
 ### Available image tags
 
