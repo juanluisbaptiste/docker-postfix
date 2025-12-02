@@ -23,10 +23,8 @@ if [ -n "${SMTP_USERNAME_FILE}" ]; then [ -e "${SMTP_USERNAME_FILE}" ] && SMTP_U
 
 SMTP_PORT="${SMTP_PORT:-587}"
 
-# If not defined, get the domain from the server host name
-if [ -z "${DOMAIN}" ]; then
-  DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
-fi
+#Get the domain from the server host name
+DOMAIN=`echo ${SERVER_HOSTNAME} | awk 'BEGIN{FS=OFS="."}{print $(NF-1),$NF}'`
 
 # Set needed config options
 add_config_value "maillog_file" "/dev/stdout"
@@ -51,32 +49,71 @@ if [ "${SMTP_PORT}" = "465" ]; then
   add_config_value "smtp_tls_security_level" "encrypt"
 fi
 
-# Bind to both IPv4 and IPv4
+# Bind to both IPv4 and IPv6
 add_config_value "inet_protocols" "all"
 
 # Create sasl_passwd file with auth credentials
-if [ ! -f /etc/postfix/sasl_passwd -a ! -z "${SMTP_USERNAME}" ]; then
-  grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
-  if [ $? -gt 0 ]; then
+if [ ! -z "${SMTP_USERNAME}" ]; then
+  _SASL_FILE="/etc/postfix/sasl_passwd"
+  _LINE1="[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}"
+
+  # Check for the existence of “$_SASL_FILE”, create it when neccesary, but only add the lines if they do not already exist
+  touch "$_SASL_FILE"
+  grep -qxF "$_LINE1" "$_SASL_FILE" || {
     echo "Adding SASL authentication configuration"
-    echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
-    postmap /etc/postfix/sasl_passwd
-  fi
+    echo "$_LINE1" >> "$_SASL_FILE"
+    postmap "$_SASL_FILE"
+  }
 fi
 
-#Set header tag
+
+# Add some Header-Checks
+_HEADER_FILE="/etc/postfix/header_checks"
+
+# Header-Check: Set header tag
 if [ ! -z "${SMTP_HEADER_TAG}" ]; then
   postconf -e "header_checks = regexp:/etc/postfix/header_checks"
-  echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" >> /etc/postfix/header_checks
+
+  # Only add the lines in “$_HEADER_FILE” if they do not already exist
+  _LINE1="/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG"
+  _LINE2="/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG"
+  grep -qxF "$_LINE1" "$_HEADER_FILE" || echo "$_LINE1" >> "$_HEADER_FILE"
+  grep -qxF "$_LINE2" "$_HEADER_FILE" || echo "$_LINE2" >> "$_HEADER_FILE"
+
+  # Update the .db file
+  postmap "$_HEADER_FILE"
+
   echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
 fi
 
-#Enable logging of subject line
+# Header-Check: Enable logging of subject line
 if [ "${LOG_SUBJECT}" == "yes" ]; then
   postconf -e "header_checks = regexp:/etc/postfix/header_checks"
-  echo -e "/^Subject:/ WARN" >> /etc/postfix/header_checks
+
+  # Only add the lines in “$_HEADER_FILE” if they do not already exist
+  _LINE1="/^Subject:/ WARN"
+  grep -qxF "$_LINE1" "$_HEADER_FILE" || echo "$_LINE1" >> "$_HEADER_FILE"
+
+  # Update the .db file
+  postmap "$_HEADER_FILE"
+
   echo "Enabling logging of subject line"
 fi
+
+# Header-Check: Set overwrite from header
+if [ ! -z "${OVERWRITE_FROM}" ]; then
+  postconf -e 'smtp_header_checks = regexp:/etc/postfix/smtp_header_checks'
+
+  # Only add the lines in “$_HEADER_FILE” if they do not already exist
+  _LINE1="/^From:.*$/ REPLACE From: $OVERWRITE_FROM"
+  grep -qxF "$_LINE1" "$_HEADER_FILE" || echo "$_LINE1" >> "$_HEADER_FILE"
+
+  # Update the .db file
+  postmap "$_HEADER_FILE"
+
+  echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
+fi
+
 
 #Check for subnet restrictions
 nets='10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16'
@@ -107,13 +144,6 @@ add_config_value "mynetworks" "${nets}"
 if [ ! -z "${SMTPUTF8_ENABLE}" ]; then
   postconf -e "smtputf8_enable = ${SMTPUTF8_ENABLE}"
   echo "Setting configuration option smtputf8_enable with value: ${SMTPUTF8_ENABLE}"
-fi
-
-if [ ! -z "${OVERWRITE_FROM}" ]; then
-  echo -e "/^From:.*$/ REPLACE From: $OVERWRITE_FROM" > /etc/postfix/smtp_header_checks
-  postmap /etc/postfix/smtp_header_checks
-  postconf -e 'smtp_header_checks = regexp:/etc/postfix/smtp_header_checks'
-  echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
 fi
 
 # Set message_size_limit
