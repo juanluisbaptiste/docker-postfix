@@ -89,7 +89,7 @@ The following env variable(s) are optional.
 
 * `DOMAIN` Override origin domain. If not set, defaults to base domain of server hostname.
 
-* `TZ` set the timezone the container is running in. The default timezone is determined by `/etc/localtime` in the container, which typically would indicate UTC.
+* `TZ` alternative way to set the timezone, when mounting `/etc/localtime` from the host is not an option.
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
