@@ -87,6 +87,9 @@ The following env variable(s) are optional.
 
 * `MESSAGE_SIZE_LIMIT` This will change the default limit of 10240000 bytes (10MB).
 
+* `ALWAYS_BCC` This will send all message via BCC to this address. Example setting:
+     ALWAYS_BCC=email@company.com
+
 * `DOMAIN` Override origin domain. If not set, defaults to base domain of server hostname.
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
