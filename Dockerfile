@@ -1,5 +1,5 @@
 #Dockerfile for a Postfix email relay service
-FROM alpine:3.22
+FROM alpine:3.23.2
 LABEL org.opencontainers.image.authors="juan@juanbaptiste.tech"
 
 RUN apk update && \
