@@ -81,6 +81,8 @@ The following env variable(s) are optional.
 
 * `DESTINATION` This will define a list of domains from which incoming messages will be accepted.
 
+* `RECIPIENT_ALLOWLIST` This will define a list of recipients or domains to which deliveries are permitted.
+
 * `LOG_SUBJECT` This will output the subject line of messages in the log.
 
 * `SMTPUTF8_ENABLE` This will enable (default) or disable support for SMTPUTF8. Valid values are `no` to disable and `yes` to enable. Not setting this variable will use the postfix default, which is `yes`.

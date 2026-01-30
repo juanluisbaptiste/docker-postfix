@@ -125,6 +125,17 @@ if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
   echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
 fi
 
+if [ ! -z "${RECIPIENT_ALLOWLIST}" ]; then
+  echo "Setting recipient allow list: ${RECIPIENT_ALLOWLIST}"
+  add_config_value "transport_maps" "lmdb://etc/postfix/transport"
+  IFS=', ' read -r -a recipient_allowlist_array <<< "${RECIPIENT_ALLOWLIST}"
+  for allowed_recipient in "${recipient_allowlist_array[@]}"; do
+    printf "%s :\n" "$allowed_recipient" >> /etc/postfix/transport
+  done
+  echo "* error: Not allowed recipient" >> /etc/postfix/transport
+  postmap /etc/postfix/transport
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before
