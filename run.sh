@@ -13,6 +13,17 @@ function add_config_value() {
  postconf -e "${key} = ${value}"
 }
 
+function set_line_in_file() {
+  local line="${1}"
+  local infile="${2}"
+  [ ! -e "${infile}" ] && echo "Touch new ${infile}" && touch "${infile}"
+  [ ! -w "${infile}" ] && echo "ERROR: Can't write to file ${infile} !!" && exit 1
+  grep -q "${line}" "${infile}" && echo "'${infile}' already contains '${line}'" && return 0
+  echo "Add '${line}' into '${infile}'"
+  echo "${line}" >> "${infile}"
+}
+
+
 # Read password and username from file to avoid unsecure env variables
 if [ -n "${SMTP_PASSWORD_FILE}" ]; then [ -e "${SMTP_PASSWORD_FILE}" ] && SMTP_PASSWORD=$(cat "${SMTP_PASSWORD_FILE}") || echo "SMTP_PASSWORD_FILE defined, but file not existing, skipping."; fi
 if [ -n "${SMTP_USERNAME_FILE}" ]; then [ -e "${SMTP_USERNAME_FILE}" ] && SMTP_USERNAME=$(cat "${SMTP_USERNAME_FILE}") || echo "SMTP_USERNAME_FILE defined, but file not existing, skipping."; fi
@@ -117,6 +128,18 @@ if [ ! -z "${OVERWRITE_FROM}" ]; then
   postconf -e 'smtp_header_checks = regexp:/etc/postfix/smtp_header_checks'
   postconf -e 'sender_canonical_maps = regexp:/etc/postfix/sender_canonical'
   echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
+fi
+
+# Discard emails to not allowed recipient domains
+if [ ! -z "${ALLOW_DOMAINS}" ]; then
+  echo "Outgoing email will be discarded with exception for allowed domains."
+  > /etc/postfix/transport       # truncate file to start fresh on container restart
+  for allow_domain in ${ALLOW_DOMAINS}; do
+    set_line_in_file "${allow_domain} :" /etc/postfix/transport
+    echo "Allow recipients in domain ${allow_domain}."
+  done
+  set_line_in_file '* discard' /etc/postfix/transport
+  postconf -e 'transport_maps = texthash:/etc/postfix/transport'
 fi
 
 # Set message_size_limit
