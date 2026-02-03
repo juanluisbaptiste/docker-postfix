@@ -54,6 +54,9 @@ fi
 # Bind to both IPv4 and IPv4
 add_config_value "inet_protocols" "all"
 
+# Clear existing header_checks to avoid duplication on restart
+> /etc/postfix/header_checks
+
 # Create sasl_passwd file with auth credentials
 if [ ! -f /etc/postfix/sasl_passwd -a ! -z "${SMTP_USERNAME}" ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
