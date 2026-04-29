@@ -128,6 +128,27 @@ if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
   echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
 fi
 
+# Custom configuration options
+
+# via env vars for easy configuring
+echo -e "\nSetting custom configuration options from POSTFIX_* environment variables:"
+for var in "${!POSTFIX_@}"; do
+  keyname="${var#POSTFIX_}"
+  keyname="${keyname,,}"
+  value=${!var}
+  add_config_value "$keyname" "$value"
+done
+
+# for more advanced configuring, allow mounting and running a script
+if [ -d /scripts.d/ ]; then
+  echo -e "\nRunning custom configuration scripts:"
+  for file in /scripts.d/*; do
+    echo -e "\nRunning init script $file ... "
+    source "$file"
+    echo "Done, exited $?"
+  done
+fi
+
 #Start services
 
 # If host mounting /var/spool/postfix, we need to delete old pid file before

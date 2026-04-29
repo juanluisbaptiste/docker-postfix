@@ -91,6 +91,22 @@ The following env variable(s) are optional.
 
 * `TZ` alternative way to set the timezone, when mounting `/etc/localtime` from the host is not an option (i.e. in Kubernetes).
 
+Any further postfix configuration for `main.cf` can be passed using something along the lines of:
+```
+POSTFIX_<option>=<value>
+```
+Example:
+```
+POSTFIX_RECIPIENT_DELIMITER=+
+```
+Note casing doesn't matter, as long as POSTFIX is uppercase:
+```
+POSTFIX_recipient_delimiter=+
+```
+
+If you want to customise any further things, you can mount a directory as `/init.d/`. All files in this directory will be sourced right before starting postfix.
+
+
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
 
     docker run -d --name postfix -p "25:25"  \

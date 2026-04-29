@@ -9,3 +9,4 @@ services:
     restart: always
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+      - "./scripts.d:/scripts.d:ro"
