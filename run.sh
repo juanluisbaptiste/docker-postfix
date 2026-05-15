@@ -69,14 +69,14 @@ fi
 
 #Set header tag
 if [ ! -z "${SMTP_HEADER_TAG}" ]; then
-  postconf -e "header_checks = regexp:/etc/postfix/header_checks"
+  add_config_value "header_checks" "regexp:/etc/postfix/header_checks"
   echo -e "/^MIME-Version:/i PREPEND RelayTag: $SMTP_HEADER_TAG\n/^Content-Transfer-Encoding:/i PREPEND RelayTag: $SMTP_HEADER_TAG" >> /etc/postfix/header_checks
   echo "Setting configuration option SMTP_HEADER_TAG with value: ${SMTP_HEADER_TAG}"
 fi
 
 #Enable logging of subject line
 if [ "${LOG_SUBJECT}" == "yes" ]; then
-  postconf -e "header_checks = regexp:/etc/postfix/header_checks"
+  add_config_value "header_checks" "regexp:/etc/postfix/header_checks"
   echo -e "/^Subject:/ WARN" >> /etc/postfix/header_checks
   echo "Enabling logging of subject line"
 fi
@@ -108,7 +108,7 @@ add_config_value "mynetworks" "${nets}"
 
 # Set SMTPUTF8
 if [ ! -z "${SMTPUTF8_ENABLE}" ]; then
-  postconf -e "smtputf8_enable = ${SMTPUTF8_ENABLE}"
+  add_config_value "smtputf8_enable" "${SMTPUTF8_ENABLE}"
   echo "Setting configuration option smtputf8_enable with value: ${SMTPUTF8_ENABLE}"
 fi
 
@@ -117,14 +117,14 @@ if [ ! -z "${OVERWRITE_FROM}" ]; then
   echo -e "/.*/ $OVERWRITE_FROM" > /etc/postfix/sender_canonical
   postmap /etc/postfix/smtp_header_checks
   postmap /etc/postfix/sender_canonical
-  postconf -e 'smtp_header_checks = regexp:/etc/postfix/smtp_header_checks'
-  postconf -e 'sender_canonical_maps = regexp:/etc/postfix/sender_canonical'
+  add_config_value "smtp_header_checks" "regexp:/etc/postfix/smtp_header_checks"
+  add_config_value "sender_canonical_maps" "regexp:/etc/postfix/sender_canonical"
   echo "Setting configuration option OVERWRITE_FROM with value: ${OVERWRITE_FROM}"
 fi
 
 # Set message_size_limit
 if [ ! -z "${MESSAGE_SIZE_LIMIT}" ]; then
-  postconf -e "message_size_limit = ${MESSAGE_SIZE_LIMIT}"
+  add_config_value "message_size_limit" "${MESSAGE_SIZE_LIMIT}"
   echo "Setting configuration option message_size_limit with value: ${MESSAGE_SIZE_LIMIT}"
 fi
 
