@@ -47,6 +47,10 @@ For more information on using multiple compose files [see here](https://docs.doc
 
     sudo docker pull juanluisbaptiste/postfix:latest
 
+For development, use the `docker-compose.override.yml` file:
+
+    sudo docker-compose -f docker-compose.override.yml build
+
 ### How to run it
 
 The following env variables need to be passed to the container:
