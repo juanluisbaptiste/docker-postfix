@@ -104,7 +104,7 @@ Note casing doesn't matter, as long as POSTFIX is uppercase:
 POSTFIX_recipient_delimiter=+
 ```
 
-If you want to customise any further things, you can mount a directory as `/init.d/`. All files in this directory will be sourced right before starting postfix.
+If you want to customise any further things, you can mount a directory as `/scripts.d/`. All files in this directory will be sourced right before starting Postfix.
 
 
 To use this container from anywhere, the 25 port or the one specified by `SMTP_PORT` needs to be exposed to the docker host server:
