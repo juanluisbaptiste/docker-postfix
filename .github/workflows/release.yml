@@ -24,11 +24,19 @@ jobs:
             exit 1
           fi
           IFS='.' read -r major minor patch _ <<< "$v"
+          # Only refresh the 'latest' tag when this is the newest stable release,
+          # so re-pushing an older version never rolls 'latest' backwards.
+          highest=$(git ls-remote --tags "https://github.com/${{ github.repository }}" 'refs/tags/v*' \
+            | awk '{print $2}' \
+            | sed 's|^refs/tags/v||' \
+            | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V | tail -1)
           {
             echo "major=${major}"
             echo "minor=${major}.${minor}"
             echo "patch=${major}.${minor}.${patch}"
             echo "ref=v${v}"
+            if [ "$v" = "$highest" ]; then echo "latest=true"; fi
           } >> "$GITHUB_OUTPUT"
 
       - name: Checkout
@@ -50,6 +58,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
             type=semver,pattern={{version}}
             alpine
+            type=raw,value=latest,enable=${{ github.event_name == 'release' || steps.version.outputs.latest == 'true' }}
             type=raw,value=${{ github.event.inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
             type=raw,value=${{ steps.version.outputs.major }},enable=${{ github.event_name == 'workflow_dispatch' }}
             type=raw,value=${{ steps.version.outputs.minor }},enable=${{ github.event_name == 'workflow_dispatch' }}
