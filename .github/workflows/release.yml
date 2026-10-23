@@ -3,16 +3,41 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build and push (e.g. 1.11.0) - checks out tag v1.11.0'
+        required: true
 
 jobs:
   docker:
     runs-on: ubuntu-24.04
 
     steps:
+      - name: Parse version
+        if: github.event_name == 'workflow_dispatch'
+        id: version
+        run: |
+          v="${{ github.event.inputs.version }}"
+          if ! [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Version must be a semantic version, e.g. 1.11.0"
+            exit 1
+          fi
+          IFS='.' read -r major minor patch _ <<< "$v"
+          {
+            echo "major=${major}"
+            echo "minor=${major}.${minor}"
+            echo "patch=${major}.${minor}.${patch}"
+            echo "ref=v${v}"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # On manual dispatch, check out the tag for the requested version.
+          # On release events this is empty and the default (the release tag) is used.
+          ref: ${{ steps.version.outputs.ref }}
 
       - name: Docker meta
         id: docker_meta
@@ -25,6 +50,10 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
             type=semver,pattern={{version}}
             alpine
+            type=raw,value=${{ github.event.inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=${{ steps.version.outputs.major }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=${{ steps.version.outputs.minor }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=${{ steps.version.outputs.patch }},enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
